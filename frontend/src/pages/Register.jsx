@@ -1,13 +1,45 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IoMdEyeOff } from "react-icons/io";
 import { IoEye } from "react-icons/io5";
-
+import axios from "axios";
+import { toast } from "react-hot-toast";
 function Register() {
   const [show, setShow] = useState(false);
+  const navigate = useNavigate();
+  const [registerData, setRegisterData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+
+  const HandleChange = (e) => {
+    setRegisterData({ ...registerData, [e.target.name]: e.target.value });
+  };
+
+  const registerHandler = async (e) => {
+    e.preventDefault();
+    try {
+      const result = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/users/register`,
+        registerData,
+        { withCredentials: true }
+      );
+      if (result.status === 201) {
+        toast.success(result.data.message);
+        navigate("/login");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error(error.response?.data?.message || "Something went wrong");
+    }
+  };
   return (
     <div>
-      <form class="bg-white text-gray-500 max-w-[340px] mx-auto w-full mt-10 md:p-6 p-4 py-8 text-left text-sm rounded-lg shadow-[0px_0px_10px_0px] shadow-black/10">
+      <form
+        onSubmit={registerHandler}
+        class="bg-white text-gray-500 max-w-[340px] mx-auto w-full mt-10 md:p-6 p-4 py-8 text-left text-sm rounded-lg shadow-[0px_0px_10px_0px] shadow-black/10"
+      >
         <h2 class="text-2xl font-bold mb-9 text-center text-gray-800">
           Sign Up
         </h2>
@@ -29,10 +61,12 @@ function Register() {
             />
           </svg>
           <input
+            onChange={HandleChange}
             class="w-full outline-none bg-transparent py-2.5"
             type="text"
             placeholder="Name"
             name="name"
+            value={registerData.name}
             required
           />
         </div>
@@ -61,10 +95,12 @@ function Register() {
             />
           </svg>
           <input
+            onChange={HandleChange}
             class="w-full outline-none bg-transparent py-2.5"
             type="email"
             placeholder="Email"
             name="email"
+            value={registerData.email}
             required
           />
         </div>
@@ -82,10 +118,12 @@ function Register() {
             />
           </svg>
           <input
+            onChange={HandleChange}
             class="w-full outline-none bg-transparent py-2.5"
             type={show ? "text" : "password"}
             placeholder="Password"
             name="password"
+            value={registerData.password}
             required
           />
           <div onClick={() => setShow(!show)}>
