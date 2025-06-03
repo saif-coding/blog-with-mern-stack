@@ -13,10 +13,11 @@ function Navbar() {
       </Link>
 
       {/* Desktop Menu */}
-      <div className="hidden sm:flex items-center gap-8">
+      <div className="hidden sm:flex items-center font-semibold gap-8">
         <Link to={"/"}>Home</Link>
         <Link to={"/about"}>About</Link>
         <Link to={"/contact"}>Contact</Link>
+        <Link to={"/blogs"}>Blogs</Link>
 
         <div className="hidden lg:flex items-center text-sm gap-2 border border-gray-300 px-3 rounded-full">
           <input
@@ -50,8 +51,13 @@ function Navbar() {
         </div>
 
         <Link to={"/login"}>
-          <button className="cursor-pointer px-8 py-2 bg-indigo-500 hover:bg-indigo-600 transition text-white rounded-full">
+          <button className="cursor-pointer px-8 py-2 bg-blue-500 hover:bg-blue-700 transition text-white rounded-full">
             Login
+          </button>
+        </Link>
+        <Link to={"/dashboard"}>
+          <button className="cursor-pointer px-8 py-2 bg-blue-500 hover:bg-blue-700 transition text-white rounded-full">
+            Dashboard
           </button>
         </Link>
       </div>

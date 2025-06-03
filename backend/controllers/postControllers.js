@@ -31,4 +31,18 @@ const getAllPost = async (req, res) => {
     console.log(error);
   }
 };
-module.exports = { addPost, getAllPost };
+
+const getSinglePost = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const post = await PostModel.findById(id).populate("author");
+    if (!post) {
+      return res.status(404).json({ message: "post not found by id" });
+    }
+    res.json(post);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: "single post error" });
+  }
+};
+module.exports = { addPost, getAllPost, getSinglePost };
