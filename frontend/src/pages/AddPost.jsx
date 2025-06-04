@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
+import { IoArrowBackCircle } from "react-icons/io5";
+import { PostContext } from "../context/PostContext";
+import { useContext } from "react";
 function AddPost() {
+  const { getAllPosts } = useContext(PostContext);
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -27,6 +31,7 @@ function AddPost() {
         toast.success(result.data.message);
         navigate("/");
       }
+      await getAllPosts();
       setLoading(false); // Stop loading animation
     } catch (error) {
       console.log(error);
@@ -37,6 +42,13 @@ function AddPost() {
   return (
     <div className="min-h-screen bg-gray-100 py-8 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
       <div className="max-w-2xl w-full bg-white shadow-2xl rounded-2xl p-8">
+        <Link to={"/dashboard"}>
+          <div className=" flex items-center text-xl gap-2 cursor-pointer">
+            <IoArrowBackCircle className=" text-2xl mt-1 text-blue-600" />
+            <span className=" text-blue-600 font-semibold">Back</span>
+          </div>
+        </Link>
+
         <h2 className="text-3xl font-bold text-center text-blue-600 mb-6">
           Add New Post
         </h2>

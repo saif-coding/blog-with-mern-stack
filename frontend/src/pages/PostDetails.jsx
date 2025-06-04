@@ -1,11 +1,16 @@
-import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useState, useContext } from "react";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import axios from "axios";
+import { IoArrowBackCircle } from "react-icons/io5";
 import { useEffect } from "react";
+import { PostContext } from "../context/PostContext";
 function PostDetails() {
+  const navigate = useNavigate();
+  const { getAllPosts } = useContext(PostContext);
   const { id } = useParams();
   const [post, setPost] = useState([]);
   console.log(post, "single post");
+
   const getSinglePost = async () => {
     try {
       const result = await axios.get(
@@ -17,12 +22,33 @@ function PostDetails() {
       console.log(error);
     }
   };
+
   useEffect(() => {
     getSinglePost();
   }, [id]);
 
+  const deletePost = async (id) => {
+    try {
+      const result = await axios.delete(
+        `${import.meta.env.VITE_BASE_URL}/posts/delete/${id}`,
+        { withCredentials: true }
+      );
+      if (result.status === 200) {
+        navigate("/blogs");
+      }
+      await getAllPosts();
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <section className="py-16 px-4 bg-white text-gray-800">
+      <Link to={"/blogs"}>
+        <div className=" flex items-center text-xl gap-2 cursor-pointer">
+          <IoArrowBackCircle className=" text-2xl mt-1 text-blue-600" />
+          <span className=" text-blue-600 font-semibold">Back</span>
+        </div>
+      </Link>
       <div className="max-w-4xl mx-auto">
         <div className="mb-6">
           <img
@@ -40,6 +66,12 @@ function PostDetails() {
         <div className="flex items-center justify-between text-sm text-gray-500">
           <p> Author: {post.author?.name}</p>
         </div>
+        <button
+          onClick={() => deletePost(post._id)}
+          className="bg-blue-500 capitalize rounded-md mt-10 text-white font-semibold px-4 py-1"
+        >
+          delete post
+        </button>
       </div>
     </section>
   );

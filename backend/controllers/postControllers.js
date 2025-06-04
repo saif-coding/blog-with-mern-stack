@@ -45,4 +45,18 @@ const getSinglePost = async (req, res) => {
     res.status(500).json({ message: "single post error" });
   }
 };
-module.exports = { addPost, getAllPost, getSinglePost };
+
+const deleteSinglePost = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const deletePost = await PostModel.findByIdAndDelete(id);
+    if (!deletePost) {
+      return res.status(404).json({ message: "post not found" });
+    }
+    return res.status(200).json({ message: "post deleted successfully " });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "error of delete post" });
+  }
+};
+module.exports = { addPost, getAllPost, getSinglePost, deleteSinglePost };

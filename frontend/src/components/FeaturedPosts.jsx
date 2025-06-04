@@ -20,7 +20,7 @@ function FeaturedPosts() {
                 className="h-48 w-full object-cover"
               />
               <div className="p-4">
-                <h3 className="text-lg font-semibold mb-2">{post.title}</h3>
+                <h3 className="text-lg font-semibold mb-2">{post.title.substring(0, 25)}...</h3>
                 <p className="text-gray-600 line-clamp-2">{post.description}</p>
                 <Link
                   to={`/postdetails/${post._id}`}
