@@ -101,7 +101,7 @@ function Login() {
                 <IoEye />
               </span>
             ) : (
-              <span classNameName=" flex text-[16px] mr-3">
+              <span className=" flex text-[16px] mr-3">
                 <IoMdEyeOff />
               </span>
             )}

@@ -1,16 +1,15 @@
+import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
-import React from "react";
-import { createContext } from "react";
 export const UserContext = createContext();
-function UserContextProvider({ chilren }) {
+function UserContextProvider({ children }) {
   const [usersData, setUsersData] = useState([]);
-
   const getUser = async () => {
     try {
       const result = await axios.get(
-        `${import.meta.env.VITE_BASE_URL}/users/get`
+        `${import.meta.env.VITE_BASE_URL}/users/getall`,
+        { withCredentials: true }
       );
-      console.log(result.data, 'user');
+      setUsersData(result.data);
     } catch (error) {
       console.log(error);
     }
@@ -21,7 +20,7 @@ function UserContextProvider({ chilren }) {
 
   return (
     <UserContext.Provider value={{ usersData, setUsersData }}>
-      {chilren}
+      {children}
     </UserContext.Provider>
   );
 }

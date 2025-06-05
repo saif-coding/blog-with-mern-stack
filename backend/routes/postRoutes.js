@@ -6,6 +6,7 @@ const {
   getAllPost,
   getSinglePost,
   deleteSinglePost,
+  updatePost,
 } = require("../controllers/postControllers");
 const postRoutes = express.Router();
 
@@ -13,5 +14,6 @@ postRoutes.post("/add", upload.single("image"), varifyToken, addPost);
 postRoutes.get("/get", varifyToken, getAllPost);
 postRoutes.get("/getsingle/:id", varifyToken, getSinglePost);
 postRoutes.delete("/delete/:id", varifyToken, deleteSinglePost);
+postRoutes.put("/update/:id", upload.single("image"), varifyToken, updatePost);
 
 module.exports = postRoutes;

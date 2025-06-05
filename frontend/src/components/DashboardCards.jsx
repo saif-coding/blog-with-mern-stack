@@ -1,16 +1,20 @@
 import { FaUserAlt, FaFileAlt, FaChartLine } from "react-icons/fa";
-
+import { UserContext } from "./../context/UserContext";
+import { PostContext } from "./../context/PostContext";
+import { useContext } from "react";
 const DashboardCards = () => {
+  const { usersData } = useContext(UserContext);
+  const { allPosts } = useContext(PostContext);
   const stats = [
     {
       title: "Total Posts",
-      value: 120,
+      value: allPosts.length,
       icon: <FaFileAlt size={24} />,
       color: "bg-blue-100 text-blue-600",
     },
     {
       title: "Total Users",
-      value: 34,
+      value: usersData.length,
       icon: <FaUserAlt size={24} />,
       color: "bg-green-100 text-green-600",
     },

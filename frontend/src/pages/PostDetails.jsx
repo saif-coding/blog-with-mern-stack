@@ -68,10 +68,15 @@ function PostDetails() {
         </div>
         <button
           onClick={() => deletePost(post._id)}
-          className="bg-blue-500 capitalize rounded-md mt-10 text-white font-semibold px-4 py-1"
+          className="bg-red-500 capitalize cursor-pointer rounded-md mt-10 text-white font-semibold px-4 py-1"
         >
           delete post
         </button>
+        <Link to={`/update/${post._id}`}>
+          <button className="bg-blue-500 capitalize cursor-pointer rounded-md ml-5 mt-10 text-white font-semibold px-4 py-1">
+            Update post
+          </button>
+        </Link>
       </div>
     </section>
   );

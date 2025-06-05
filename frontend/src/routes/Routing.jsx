@@ -7,6 +7,7 @@ import AddPost from "../pages/AddPost";
 import AllPosts from "../pages/AllPosts";
 import PostDetails from "../pages/PostDetails";
 import Dashboard from "../components/Dashboard";
+import Update from "../pages/Update";
 function Routing() {
   return (
     <Routes>
@@ -16,6 +17,7 @@ function Routing() {
       <Route path="/addpost" element={<AddPost />} />
       <Route path="/blogs" element={<AllPosts />} />
       <Route path="/postdetails/:id" element={<PostDetails />} />
+      <Route path="/update/:id" element={<Update />} />
       <Route path="/dashboard" element={<Dashboard />} />
     </Routes>
   );

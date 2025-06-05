@@ -59,4 +59,34 @@ const deleteSinglePost = async (req, res) => {
     return res.status(500).json({ message: "error of delete post" });
   }
 };
-module.exports = { addPost, getAllPost, getSinglePost, deleteSinglePost };
+
+const updatePost = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const { title, description, image } = req.body;
+    const updateurl = await uploadCloudinary(req.file.path);
+    if (!req.file) {
+      return res.status(400).json({ message: "No image uploaded" });
+    }
+    const updating = await PostModel.findByIdAndUpdate(
+      id,
+      {
+        title,
+        description,
+        image: updateurl,
+      },
+      { new: true }
+    );
+    return res.status(200).json(updating);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "error of update post" });
+  }
+};
+module.exports = {
+  addPost,
+  getAllPost,
+  getSinglePost,
+  deleteSinglePost,
+  updatePost,
+};
