@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { IoMdEyeOff } from "react-icons/io";
 import { IoEye } from "react-icons/io5";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { UserContext } from "../context/UserContext";
 function Login() {
+  const { getUser } = useContext(UserContext);
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const [loginData, setLoginData] = useState({
@@ -24,7 +26,10 @@ function Login() {
         toast.success(result.data.message);
         navigate("/");
       }
-    } catch (error) {}
+      await getUser();
+    } catch (error) {
+      console.log(error);
+    }
   };
   const handleChange = (e) => {
     setLoginData({ ...loginData, [e.target.name]: e.target.value });

@@ -1,7 +1,32 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { FaUser, FaChevronDown } from "react-icons/fa";
+import { UserContext } from "./../context/UserContext";
+import axios from "axios";
+import { toast } from "react-hot-toast";
 function Navbar() {
+  const navigate = useNavigate();
+  const { usersData, setUsersData } = useContext(UserContext);
   const [open, setOpen] = React.useState(false);
+
+  const logout = async () => {
+    try {
+      const result = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/users/logout`,
+        {},
+
+        { withCredentials: true }
+      );
+      if (result.status === 200) {
+        setUsersData("");
+        navigate("/login");
+        toast.success(result.data.message);
+      }
+      console.log(result.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <nav className="flex items-center justify-between px-6 md:px-16 lg:px-24 xl:px-32 py-4 border-b border-gray-300 bg-white relative transition-all">
       <Link to={"/"}>
@@ -50,16 +75,45 @@ function Navbar() {
           </svg>
         </div>
 
-        <Link to={"/login"}>
-          <button className="cursor-pointer px-8 py-2 bg-blue-500 hover:bg-blue-700 transition text-white rounded-full">
-            Login
+        {usersData.length > 0 ? (
+          <Link to={"/dashboard"}>
+            <button className="cursor-pointer px-8 py-2 bg-blue-500 hover:bg-blue-700 transition text-white rounded-full">
+              Dashboard
+            </button>
+          </Link>
+        ) : (
+          <Link to={"/login"}>
+            <button className="cursor-pointer px-8 py-2 bg-blue-500 hover:bg-blue-700 transition text-white rounded-full">
+              Login
+            </button>
+          </Link>
+        )}
+
+        <div className="relative group inline-block text-left">
+          <button className="flex items-center gap-2 px-2 rounded-full py-2 bg-blue-600 text-white hover:bg-blue-700">
+            <FaUser />
+
+            <FaChevronDown size={14} />
           </button>
-        </Link>
-        <Link to={"/dashboard"}>
-          <button className="cursor-pointer px-8 py-2 bg-blue-500 hover:bg-blue-700 transition text-white rounded-full">
-            Dashboard
-          </button>
-        </Link>
+
+          {/* Dropdown */}
+          <div className="absolute left-0 mt- w-40 bg-white border rounded shadow-md opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-all duration-300 z-10">
+            <ul className="flex flex-col text-sm text-gray-700">
+              <li className="hover:bg-gray-100 px-4 py-2 cursor-pointer">
+                Profile
+              </li>
+              <li className="hover:bg-gray-100 px-4 py-2 cursor-pointer">
+                Settings
+              </li>
+              <li
+                onClick={() => logout()}
+                className="hover:bg-gray-100 px-4 py-2 cursor-pointer"
+              >
+                Logout
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
 
       <button

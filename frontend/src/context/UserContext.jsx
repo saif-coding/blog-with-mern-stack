@@ -19,7 +19,7 @@ function UserContextProvider({ children }) {
   }, []);
 
   return (
-    <UserContext.Provider value={{ usersData, setUsersData }}>
+    <UserContext.Provider value={{ usersData, setUsersData,getUser }}>
       {children}
     </UserContext.Provider>
   );
