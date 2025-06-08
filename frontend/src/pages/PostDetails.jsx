@@ -1,11 +1,13 @@
 import React, { useState, useContext } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate, Link, data } from "react-router-dom";
 import axios from "axios";
 import { IoArrowBackCircle } from "react-icons/io5";
 import { useEffect } from "react";
 import { PostContext } from "../context/PostContext";
 import { toast } from "react-hot-toast";
+import { UserContext } from "../context/UserContext";
 function PostDetails() {
+  const { admin } = useContext(UserContext);
   const navigate = useNavigate();
   const [comment, setComment] = useState("");
   const [getComment, setGetComment] = useState([]);
@@ -58,10 +60,9 @@ function PostDetails() {
         toast.success(result.data.message);
         await getAllComments();
       }
-      console.log(result.data);
     } catch (error) {
       console.log(error);
-      toast.error(error.response.error);
+      toast.error(error?.response?.data.message);
     }
   };
 
@@ -89,7 +90,6 @@ function PostDetails() {
         toast.success(result.data.message);
       }
       await getAllComments();
-      console.log(result.data);
     } catch (error) {
       console.log(error);
     }
@@ -120,17 +120,21 @@ function PostDetails() {
         <div className="flex items-center justify-between text-sm text-gray-500">
           <p> Author: {post.author?.name}</p>
         </div>
-        <button
-          onClick={() => deletePost(post._id)}
-          className="bg-red-500 capitalize cursor-pointer rounded-md mt-10 text-white font-semibold px-4 py-1"
-        >
-          delete post
-        </button>
-        <Link to={`/update/${post._id}`}>
-          <button className="bg-blue-500 capitalize cursor-pointer rounded-md ml-5 mt-10 text-white font-semibold px-4 py-1">
-            Update post
-          </button>
-        </Link>
+        {admin.role === "admin" && (
+          <>
+            <button
+              onClick={() => deletePost(post._id)}
+              className="bg-red-500 capitalize cursor-pointer rounded-md mt-10 text-white font-semibold px-4 py-1"
+            >
+              delete post
+            </button>
+            <Link to={`/update/${post._id}`}>
+              <button className="bg-blue-500 capitalize cursor-pointer rounded-md ml-5 mt-10 text-white font-semibold px-4 py-1">
+                Update post
+              </button>
+            </Link>
+          </>
+        )}
 
         <div className="mt-2 relative ">
           <input

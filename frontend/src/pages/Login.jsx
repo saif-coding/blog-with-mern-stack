@@ -6,7 +6,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { UserContext } from "../context/UserContext";
 function Login() {
-  const { getUser } = useContext(UserContext);
+  const { getUser, getSingleUser } = useContext(UserContext);
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const [loginData, setLoginData] = useState({
@@ -27,6 +27,7 @@ function Login() {
         navigate("/");
       }
       await getUser();
+      await getSingleUser();
     } catch (error) {
       console.log(error);
     }

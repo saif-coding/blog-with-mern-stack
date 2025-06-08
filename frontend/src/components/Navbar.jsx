@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaUser, FaChevronDown } from "react-icons/fa";
 import { UserContext } from "./../context/UserContext";
@@ -6,8 +6,9 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 function Navbar() {
   const navigate = useNavigate();
-  const { usersData, setUsersData } = useContext(UserContext);
+  const { setUsersData, admin } = useContext(UserContext);
   const [open, setOpen] = React.useState(false);
+  const proAdmin = admin.role === "admin";
 
   const logout = async () => {
     try {
@@ -22,11 +23,11 @@ function Navbar() {
         navigate("/login");
         toast.success(result.data.message);
       }
-      console.log(result.data);
     } catch (error) {
       console.log(error);
     }
   };
+
   return (
     <nav className="flex items-center justify-between px-6 md:px-16 lg:px-24 xl:px-32 py-4 border-b border-gray-300 bg-white relative transition-all">
       <Link to={"/"}>
@@ -75,16 +76,10 @@ function Navbar() {
           </svg>
         </div>
 
-        {usersData.length > 0 ? (
-          <Link to={"/dashboard"}>
+        {proAdmin && (
+          <Link to="/dashboard">
             <button className="cursor-pointer px-8 py-2 bg-blue-500 hover:bg-blue-700 transition text-white rounded-full">
               Dashboard
-            </button>
-          </Link>
-        ) : (
-          <Link to={"/login"}>
-            <button className="cursor-pointer px-8 py-2 bg-blue-500 hover:bg-blue-700 transition text-white rounded-full">
-              Login
             </button>
           </Link>
         )}
@@ -99,11 +94,19 @@ function Navbar() {
           {/* Dropdown */}
           <div className="absolute left-0 mt- w-40 bg-white border rounded shadow-md opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-all duration-300 z-10">
             <ul className="flex flex-col text-sm text-gray-700">
-              <li className="hover:bg-gray-100 px-4 py-2 cursor-pointer">
-                Profile
-              </li>
+              <Link to={"/profile"}>
+                <li className="hover:bg-gray-100 px-4 py-2 cursor-pointer">
+                  Profile
+                </li>
+              </Link>
               <li className="hover:bg-gray-100 px-4 py-2 cursor-pointer">
                 Settings
+              </li>
+              <Link to={"/register"} className="hover:bg-gray-100 px-4 py-2 cursor-pointer">
+                Register
+              </Link>
+              <li className="hover:bg-gray-100 px-4 py-2 cursor-pointer">
+                Login
               </li>
               <li
                 onClick={() => logout()}

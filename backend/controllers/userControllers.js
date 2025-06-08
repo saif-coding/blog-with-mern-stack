@@ -75,6 +75,18 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-module.exports = getAllUsers;
+const getSingleUser = async (req, res) => {
+  const userId = req.user.userId;
+  try {
+    const user = await UserModel.findById(userId).select("-password");
+    if (!user) {
+      return res.status(400).json({ message: "user not found" });
+    }
+    return res.status(200).json(user);
+  } catch (error) {
+    console.log("Error getting user:", error.message);
+    res.status(500).json({ message: "Server error while getting user" });
+  }
+};
 
-module.exports = { userRegister, userLogin, userLogout, getAllUsers };
+module.exports = { userRegister, userLogin, userLogout, getAllUsers, getSingleUser };

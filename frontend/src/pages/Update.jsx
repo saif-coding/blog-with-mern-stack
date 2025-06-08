@@ -9,16 +9,15 @@ function Update() {
   const { id } = useParams();
   const { getAllPosts, allPosts } = useContext(PostContext);
   const filterPosts = allPosts.find((p) => p._id === id);
-  console.log(filterPosts, "update");
 
   useEffect(() => {
-   if(filterPosts){
-    setTitle(filterPosts.title)
-    setDescription(filterPosts.description)
-    setImage(filterPosts.image)
-   }
-  }, [filterPosts])
-  
+    if (filterPosts) {
+      setTitle(filterPosts.title);
+      setDescription(filterPosts.description);
+      setImage(filterPosts.image);
+    }
+  }, [filterPosts]);
+
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -54,7 +53,7 @@ function Update() {
   return (
     <div className="min-h-screen bg-gray-100 py-8 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
       <div className="max-w-2xl w-full bg-white shadow-2xl rounded-2xl p-8">
-        <Link to={"/dashboard"}>
+        <Link to={`/postdetails/${id}`}>
           <div className=" flex items-center text-xl gap-2 cursor-pointer">
             <IoArrowBackCircle className=" text-2xl mt-1 text-blue-600" />
             <span className=" text-blue-600 font-semibold">Back</span>

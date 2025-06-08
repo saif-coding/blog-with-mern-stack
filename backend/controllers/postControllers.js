@@ -26,7 +26,7 @@ const addPost = async (req, res) => {
 const getAllPost = async (req, res) => {
   try {
     const userId = req.user.userId;
-    const allPosts = await PostModel.find({ author: userId });
+    const allPosts = await PostModel.find();
     return res.status(200).json(allPosts);
   } catch (error) {
     console.log(error);
