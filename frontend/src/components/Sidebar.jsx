@@ -14,9 +14,9 @@ const Sidebar = () => {
         >
           <FaBlog /> Add Post
         </Link>
-        <li className="flex items-center gap-3 hover:text-blue-400 cursor-pointer">
-          <FaUser /> Users
-        </li>
+        <Link to={"/users"} className="flex items-center gap-3 hover:text-blue-400 cursor-pointer">
+          <FaUser /> All Users 
+        </Link>
         <li className="flex items-center gap-3 hover:text-blue-400 cursor-pointer">
           <FaSignOutAlt /> Logout
         </li>

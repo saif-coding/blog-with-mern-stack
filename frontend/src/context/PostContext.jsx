@@ -19,7 +19,7 @@ function PostContextProvider({ children }) {
   }, []);
 
   return (
-    <PostContext.Provider value={{getAllPosts, allPosts, setAllPosts }}>
+    <PostContext.Provider value={{ getAllPosts, allPosts, setAllPosts }}>
       {children}
     </PostContext.Provider>
   );

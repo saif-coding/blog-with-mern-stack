@@ -10,11 +10,12 @@ import Dashboard from "../components/Dashboard";
 import Update from "../pages/Update";
 import UserProfile from "../components/UserProfile";
 import { UserContext } from "../context/UserContext";
+import UsersList from "../components/UsersList";
 
 function Routing() {
   const { admin } = useContext(UserContext);
   const isAdmin = admin.role === "admin";
-  console.log(admin, "routeing");
+  const isUser = admin.role === "user";
   return (
     <Routes>
       <Route path="/" element={<Home />} />
@@ -35,9 +36,13 @@ function Routing() {
         element={isAdmin ? <Dashboard /> : <Navigate to="/" replace />}
       />
       <Route
+        path="/users"
+        element={isAdmin ? <UsersList /> : <Navigate to="/" replace />}
+      />
+      <Route
         path="/profile"
         element={
-          isAdmin.length > 0 ? <UserProfile /> : <Navigate to="/" replace />
+          isUser || isAdmin ? <UserProfile /> : <Navigate to="/" replace />
         }
       />
     </Routes>

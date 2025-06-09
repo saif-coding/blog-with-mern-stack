@@ -1,12 +1,13 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaUser, FaChevronDown } from "react-icons/fa";
 import { UserContext } from "./../context/UserContext";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 function Navbar() {
   const navigate = useNavigate();
-  const { setUsersData, admin } = useContext(UserContext);
+  const location = useLocation();
+  const { setUsersData, admin, setAdmin } = useContext(UserContext);
   const [open, setOpen] = React.useState(false);
   const proAdmin = admin.role === "admin";
 
@@ -15,10 +16,10 @@ function Navbar() {
       const result = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/users/logout`,
         {},
-
         { withCredentials: true }
       );
       if (result.status === 200) {
+        setAdmin("");
         setUsersData("");
         navigate("/login");
         toast.success(result.data.message);
@@ -41,40 +42,39 @@ function Navbar() {
       {/* Desktop Menu */}
       <div className="hidden sm:flex items-center font-semibold gap-8">
         <Link to={"/"}>Home</Link>
-        <Link to={"/about"}>About</Link>
-        <Link to={"/contact"}>Contact</Link>
         <Link to={"/blogs"}>Blogs</Link>
-
-        <div className="hidden lg:flex items-center text-sm gap-2 border border-gray-300 px-3 rounded-full">
-          <input
-            className="py-1.5 w-full bg-transparent outline-none placeholder-gray-500"
-            type="text"
-            placeholder="Search products"
-          />
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M10.836 10.615 15 14.695"
-              stroke="#7A7B7D"
-              stroke-width="1.2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+        {location.pathname == "/blogs" && (
+          <div className="hidden lg:flex items-center text-sm gap-2 border border-gray-300 px-3 rounded-full">
+            <input
+              className="py-1.5 w-full bg-transparent outline-none placeholder-gray-500"
+              type="text"
+              placeholder="Search products"
             />
-            <path
-              clip-rule="evenodd"
-              d="M9.141 11.738c2.729-1.136 4.001-4.224 2.841-6.898S7.67.921 4.942 2.057C2.211 3.193.94 6.281 2.1 8.955s4.312 3.92 7.041 2.783"
-              stroke="#7A7B7D"
-              stroke-width="1.2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-        </div>
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M10.836 10.615 15 14.695"
+                stroke="#7A7B7D"
+                stroke-width="1.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                clip-rule="evenodd"
+                d="M9.141 11.738c2.729-1.136 4.001-4.224 2.841-6.898S7.67.921 4.942 2.057C2.211 3.193.94 6.281 2.1 8.955s4.312 3.92 7.041 2.783"
+                stroke="#7A7B7D"
+                stroke-width="1.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
+        )}
 
         {proAdmin && (
           <Link to="/dashboard">
@@ -102,12 +102,18 @@ function Navbar() {
               <li className="hover:bg-gray-100 px-4 py-2 cursor-pointer">
                 Settings
               </li>
-              <Link to={"/register"} className="hover:bg-gray-100 px-4 py-2 cursor-pointer">
+              <Link
+                to={"/register"}
+                className="hover:bg-gray-100 px-4 py-2 cursor-pointer"
+              >
                 Register
               </Link>
-              <li className="hover:bg-gray-100 px-4 py-2 cursor-pointer">
+              <Link
+                to={"/login"}
+                className="hover:bg-gray-100 px-4 py-2 cursor-pointer"
+              >
                 Login
-              </li>
+              </Link>
               <li
                 onClick={() => logout()}
                 className="hover:bg-gray-100 px-4 py-2 cursor-pointer"
@@ -147,15 +153,16 @@ function Navbar() {
         <a href="#" className="block">
           Home
         </a>
-        <a href="#" className="block">
-          About
-        </a>
-        <a href="#" className="block">
-          Contact
-        </a>
-        <button className="cursor-pointer px-6 py-2 mt-2 bg-indigo-500 hover:bg-indigo-600 transition text-white rounded-full text-sm">
+
+        <Link to={"/blogs"} className="block">
+          Blogs
+        </Link>
+        <Link
+          to={"/login"}
+          className="cursor-pointer px-6 py-2 mt-2 bg-indigo-500 hover:bg-indigo-600 transition text-white rounded-full text-sm"
+        >
           Login
-        </button>
+        </Link>
       </div>
     </nav>
   );
