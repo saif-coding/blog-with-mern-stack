@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "https://blog-with-mern-stack.onrender.com",
+    origin: "https://blog-with-mern-stack.vercel.app/",
     credentials: true,
   })
 );
