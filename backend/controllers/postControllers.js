@@ -5,6 +5,7 @@ const addPost = async (req, res) => {
   try {
     const { title, description } = req.body;
     const userId = req.user.userId;
+    
     const imageUrl = await uploadCloudinary(req.file.path);
     if (!req.file) {
       return res.status(400).json({ message: "No image uploaded" });
